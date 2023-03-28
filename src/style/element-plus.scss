@@ -40,7 +40,9 @@
 .reset-margin [class*="el-icon"] + span {
   margin-left: 2px !important;
 }
-
+.reset-margin {
+  // margin-left: -1px !important;
+}
 /* 自定义 popover 的类名 */
 .pure-popper {
   padding: 0 !important;

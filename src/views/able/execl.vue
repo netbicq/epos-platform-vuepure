@@ -57,14 +57,17 @@ const exportExcel = () => {
     return arr;
   });
   const titleList: string[] = [];
+  console.log(columns);
+  console.log(data);
   columns.forEach((column: Columns) => {
     titleList.push(column.title);
   });
   res.unshift(titleList);
-  const workSheet = utils.aoa_to_sheet(res);
-  const workBook = utils.book_new();
-  utils.book_append_sheet(workBook, workSheet, "数据报表");
-  writeFile(workBook, "tableV2.xlsx");
+  console.log(res);
+  // const workSheet = utils.aoa_to_sheet(res);
+  // const workBook = utils.book_new();
+  // utils.book_append_sheet(workBook, workSheet, "数据报表");
+  // writeFile(workBook, "tableV2.xlsx");
 };
 </script>
 

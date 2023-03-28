@@ -12,6 +12,7 @@ import Delete from "@iconify-icons/ep/delete";
 import EditPen from "@iconify-icons/ep/edit-pen";
 import Search from "@iconify-icons/ep/search";
 import Refresh from "@iconify-icons/ep/refresh";
+import Download from "@iconify-icons/ep/download";
 import AddFill from "@iconify-icons/ri/add-circle-line";
 
 defineOptions({
@@ -30,16 +31,22 @@ const {
   resetForm,
   handleUpdate,
   handleDelete,
+  handleDownload,
   handleSizeChange,
   handleCurrentChange,
   handleSelectionChange
 } = useUser();
+
+const getCheckList = parmas => {
+  // console.log('getCheckList', parmas)
+};
 </script>
 
 <template>
   <div class="main">
     <tree class="w-[17%] float-left" />
     <div class="float-right w-[81%]">
+      <!-- 头部搜索框 -->
       <el-form
         ref="formRef"
         :inline="true"
@@ -73,6 +80,7 @@ const {
             <el-option label="已关闭" value="0" />
           </el-select>
         </el-form-item>
+        <!-- 检索按钮 -->
         <el-form-item>
           <el-button
             type="primary"
@@ -87,11 +95,39 @@ const {
           </el-button>
         </el-form-item>
       </el-form>
-
+      <!-- 用户管理 -->
       <PureTableBar title="用户管理" @refresh="onSearch">
         <template #buttons>
           <el-button type="primary" :icon="useRenderIcon(AddFill)">
-            新增用户
+            新增
+          </el-button>
+          <el-button
+            type="success"
+            :icon="useRenderIcon(EditPen)"
+            @click="handleUpdate(row)"
+          >
+            修改
+          </el-button>
+          <!-- <el-button type="primary" :icon="useRenderIcon(Delete)">
+		    删除
+			</el-button> -->
+          <el-popconfirm title="是否确认删除?">
+            <template #reference>
+              <el-button
+                type="danger"
+                :icon="useRenderIcon(Delete)"
+                @click="handleDelete(row)"
+              >
+                删除
+              </el-button>
+            </template>
+          </el-popconfirm>
+          <el-button
+            type="warning"
+            :icon="useRenderIcon(Download)"
+            @click="handleDownload(row)"
+          >
+            导出
           </el-button>
         </template>
         <template v-slot="{ size, checkList }">
@@ -113,6 +149,7 @@ const {
             @selection-change="handleSelectionChange"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
+            @change="getCheckList(checkList)"
           >
             <template #operation="{ row }">
               <el-button
@@ -120,12 +157,20 @@ const {
                 link
                 type="primary"
                 :size="size"
-                @click="handleUpdate(row)"
-                :icon="useRenderIcon(EditPen)"
+                :icon="useRenderIcon(Password)"
               >
-                修改
+                重置密码
               </el-button>
-              <el-popconfirm title="是否确认删除?">
+              <el-button
+                class="reset-margin"
+                link
+                type="primary"
+                :size="size"
+                :icon="useRenderIcon(Role)"
+              >
+                分配角色
+              </el-button>
+              <!-- <el-popconfirm title="是否确认删除?">
                 <template #reference>
                   <el-button
                     class="reset-margin"
@@ -138,43 +183,7 @@ const {
                     删除
                   </el-button>
                 </template>
-              </el-popconfirm>
-              <el-dropdown>
-                <el-button
-                  class="ml-3 mt-[2px]"
-                  link
-                  type="primary"
-                  :size="size"
-                  @click="handleUpdate(row)"
-                  :icon="useRenderIcon(More)"
-                />
-                <template #dropdown>
-                  <el-dropdown-menu>
-                    <el-dropdown-item>
-                      <el-button
-                        :class="buttonClass"
-                        link
-                        type="primary"
-                        :size="size"
-                        :icon="useRenderIcon(Password)"
-                      >
-                        重置密码
-                      </el-button>
-                    </el-dropdown-item>
-                    <el-dropdown-item>
-                      <el-button
-                        :class="buttonClass"
-                        link
-                        type="primary"
-                        :size="size"
-                        :icon="useRenderIcon(Role)"
-                      >
-                        分配角色
-                      </el-button>
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
+              </el-popconfirm> -->
             </template>
           </pure-table>
         </template>

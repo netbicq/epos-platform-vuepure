@@ -540,6 +540,7 @@ onMounted(() => {
           >
             {{ transformI18n(item.meta.title) }}
           </router-link>
+          <!-- 删除图标 -->
           <span
             v-if="
               iconIsActive(item, index) ||
@@ -550,11 +551,11 @@ onMounted(() => {
           >
             <IconifyIconOffline :icon="CloseBold" />
           </span>
-          <div
+          <!-- <div
             :ref="'schedule' + index"
             v-if="showModel !== 'card'"
             :class="[scheduleIsActive(item)]"
-          />
+          /> -->
         </div>
       </div>
     </div>

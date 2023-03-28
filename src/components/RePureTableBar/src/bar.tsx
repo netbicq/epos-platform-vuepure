@@ -24,11 +24,33 @@ export default defineComponent({
   emits: ["refresh"],
   setup(props, { emit, slots, attrs }) {
     const buttonRef = ref();
-    const checkList = ref([]);
+    const checkList = ref([
+      "序号",
+      "用户编号",
+      "用户名称",
+      "用户昵称",
+      "性别",
+      "部门",
+      "手机号码",
+      "状态",
+      "创建时间"
+    ]);
+    const checkes = ref([
+      "序号",
+      "用户编号",
+      "用户名称",
+      "用户昵称",
+      "性别",
+      "部门",
+      "手机号码",
+      "状态",
+      "创建时间"
+    ]);
+    const checkAll = ref(true);
+    const isIndeterminate = ref(false);
     const size = ref("default");
     const isExpandAll = ref(true);
     const loading = ref(false);
-
     const getDropdownItemStyle = computed(() => {
       return s => {
         return {
@@ -38,6 +60,23 @@ export default defineComponent({
         };
       };
     });
+
+    // 全选
+    const handleCheckAllChange = (val: boolean) => {
+      checkList.value = val ? checkes.value : checkList.value;
+      checkAll.value = checkList.value.length === checkes.value.length;
+      isIndeterminate.value =
+        checkList.value.length > 0 &&
+        checkList.value.length < checkes.value.length;
+    };
+    // 中间项
+    const handleCheckedCitiesChange = (value: string[]) => {
+      console.log(value);
+      const checkedCount = value.length;
+      checkAll.value = checkedCount === checkes.value.length;
+      isIndeterminate.value =
+        checkedCount > 0 && checkedCount < checkes.value.length;
+    };
 
     const iconClass = computed(() => {
       return [
@@ -150,10 +189,26 @@ export default defineComponent({
               </el-tooltip>
               <el-divider direction="vertical" />
 
-              <el-popover v-slots={reference} width="200" trigger="click">
-                <el-checkbox-group v-model={checkList.value}>
-                  <el-checkbox label="序号列" />
-                  <el-checkbox label="勾选列" />
+              <el-popover v-slots={reference} width="120" trigger="click">
+                <el-checkbox
+                  v-model={checkAll.value}
+                  indeterminate={isIndeterminate.value}
+                  onChange={handleCheckAllChange}
+                  label="全选"
+                />
+                <el-checkbox-group
+                  v-model={checkList.value}
+                  onChange={handleCheckedCitiesChange}
+                >
+                  <el-checkbox label="序号" />
+                  <el-checkbox label="用户编号" />
+                  <el-checkbox label="用户名称" />
+                  <el-checkbox label="用户昵称" />
+                  <el-checkbox label="性别" />
+                  <el-checkbox label="部门" />
+                  <el-checkbox label="手机号码" />
+                  <el-checkbox label="状态" />
+                  <el-checkbox label="创建时间" />
                 </el-checkbox-group>
               </el-popover>
             </div>
